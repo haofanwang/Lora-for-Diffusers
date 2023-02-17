@@ -69,7 +69,7 @@ Our method is very straightforward: take out weight from .safetensor, and merge 
 Our script should work fine with most of models from [Huggingface](https://huggingface.co/) and [cititai](https://civitai.com/), if not, you can also modify the code on your own. Believe me, it is really simple and you can make it.
 
 ```bash
-python load.py
+python convert_lora_safetensor_to_diffusers.py
 ```
 
 # How to train your Lora?
