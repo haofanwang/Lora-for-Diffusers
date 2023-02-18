@@ -72,6 +72,8 @@ Our script should work fine with most of models from [Huggingface](https://huggi
 python convert_lora_safetensor_to_diffusers.py
 ```
 
+We have made a PR for diffusers on this [issue](https://github.com/huggingface/diffusers/pull/2403), you can use it on diffusers soon!
+
 # How to train your Lora?
 
 Diffusers has provide a simple [train_text_to_image_lora.py](https://github.com/huggingface/diffusers/tree/main/examples/text_to_image) to train your on Lora model. Please follow its instruction to install requirements.
