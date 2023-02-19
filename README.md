@@ -109,3 +109,80 @@ prompt = "A pokemon with green eyes and red legs."
 image = pipe(prompt, num_inference_steps=30, guidance_scale=7.5).images[0]
 image.save("pokemon.png")
 ```
+
+## Train LoRA with ColossalAI framework
+
+[ColossalAI](https://github.com/hpcaitech/ColossalAI) supports LoRA already. We only need modify a few lines on the top of [train_dreambooth_colossalai.py](https://github.com/huggingface/diffusers/blob/main/examples/research_projects/colossalai/train_dreambooth_colossalai.py). This example is for dreambooth, but you can easily adopt it regular text to image training.
+
+```bash
+from diffusers.loaders import AttnProcsLayers
+from diffusers.models.cross_attention import LoRACrossAttnProcessor
+
+# attention here! It is necessaray to init unet under ColoInitContext, not just lora layers
+with ColoInitContext(device=get_current_device()):
+        
+    unet = UNet2DConditionModel.from_pretrained(
+        args.pretrained_model_name_or_path, 
+        subfolder="unet", 
+        revision=args.revision, 
+        low_cpu_mem_usage=False
+    )
+    unet.requires_grad_(False)
+
+    # Set correct lora layers
+    lora_attn_procs = {}
+    for name in unet.attn_processors.keys():
+        cross_attention_dim = None if name.endswith("attn1.processor") else unet.config.cross_attention_dim
+        if name.startswith("mid_block"):
+            hidden_size = unet.config.block_out_channels[-1]
+        elif name.startswith("up_blocks"):
+            block_id = int(name[len("up_blocks.")])
+            hidden_size = list(reversed(unet.config.block_out_channels))[block_id]
+        elif name.startswith("down_blocks"):
+            block_id = int(name[len("down_blocks.")])
+            hidden_size = unet.config.block_out_channels[block_id]
+
+        lora_attn_procs[name] = LoRACrossAttnProcessor(
+            hidden_size=hidden_size, cross_attention_dim=cross_attention_dim
+        )
+
+    unet.set_attn_processor(lora_attn_procs)
+    lora_layers = AttnProcsLayers(unet.attn_processors)
+
+# DDP
+unet = gemini_zero_dpp(unet, args.placement)
+
+# config optimizer for colossalai zero, set initial_scale to large value to avoid underflow
+optimizer = GeminiAdamOptimizer(unet, 
+                                lr=args.learning_rate, 
+                                betas=(args.adam_beta1, args.adam_beta2),
+                                weight_decay=args.adam_weight_decay,
+                                eps=args.adam_epsilon,
+                                initial_scale=2**16, 
+                                clipping_norm=args.max_grad_norm)
+```
+
+Here we go, the only thing is the initialization way of UNet. To save LoRA weights only,
+
+```bash
+torch_unet = get_static_torch_model(unet)
+if gpc.get_local_rank(ParallelMode.DATA) == 0:
+    torch_unet = torch_unet.to(torch.float32)
+    torch_unet.save_attn_procs(save_path)
+```
+
+Then, do inference
+
+```bash
+from diffusers import StableDiffusionPipeline
+import torch
+
+model_path = "sd-model-finetuned-lora"
+pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", torch_dtype=torch.float16)
+pipe.unet.load_attn_procs(model_path)
+pipe.to("cuda")
+
+prompt = "A pokemon with green eyes and red legs."
+image = pipe(prompt, num_inference_steps=30, guidance_scale=7.5).images[0]
+image.save("pokemon.png")
+```
