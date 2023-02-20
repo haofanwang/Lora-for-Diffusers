@@ -112,7 +112,7 @@ image.save("pokemon.png")
 
 ## Train LoRA with ColossalAI framework
 
-[ColossalAI](https://github.com/hpcaitech/ColossalAI) supports LoRA already. We only need modify a few lines on the top of [train_dreambooth_colossalai.py](https://github.com/huggingface/diffusers/blob/main/examples/research_projects/colossalai/train_dreambooth_colossalai.py). This example is for dreambooth, but you can easily adopt it regular text to image training.
+[ColossalAI](https://github.com/hpcaitech/ColossalAI) supports LoRA already. We only need modify a few lines on the top of [train_dreambooth_colossalai.py](https://github.com/huggingface/diffusers/blob/main/examples/research_projects/colossalai/train_dreambooth_colossalai.py). This example is for dreambooth, but you can easily adopt it regular text to image training. The generated LoRA weights are only for attention layers in UNet. If you want to support text encoder too, please use acceletate framework in diffusers, as ColossalAI does not support multiple models yet.
 
 ```bash
 from diffusers.loaders import AttnProcsLayers
@@ -186,3 +186,11 @@ prompt = "A pokemon with green eyes and red legs."
 image = pipe(prompt, num_inference_steps=30, guidance_scale=7.5).images[0]
 image.save("pokemon.png")
 ```
+
+You may find that the generated LoRA weight is only about 3MB size, this is because of the default setting. To increase the size, you can manually set the rank (dimension for low rank decomposition) for LoRA layers.
+
+```bash
+lora_attn_procs[name] = LoRACrossAttnProcessor(hidden_size=hidden_size, cross_attention_dim=cross_attention_dim, rank=128)
+```
+
+Then, the LoRA weights will be about 100-200MB size.
