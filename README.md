@@ -2,6 +2,8 @@
 
 This repository provides the simplest tutorial code for AIGC researchers to use Lora in just a few lines. Using this handbook, you can easily play with any Lora model from active communities such as [Huggingface](https://huggingface.co/) and [cititai](https://civitai.com/).
 
+Now, we also support [ControlNet-for-Diffusers](https://github.com/haofanwang/ControlNet-for-Diffusers).
+
 # Background
 ## What is Lora?
 Low-Rank Adaptation of Large Language Models ([LoRA](https://github.com/microsoft/LoRA)) is developed by Microsoft to reduce the number of trainable parameters by learning pairs of rank-decompostion matrices while freezing the original weights. Lora attemptes to fine-tune the "residual" of the model instead of the entire model: i.e., train the $\Delta W$ instead of $W$.
