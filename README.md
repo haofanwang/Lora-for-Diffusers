@@ -195,4 +195,4 @@ You may find that the generated LoRA weight is only about 3MB size, this is beca
 lora_attn_procs[name] = LoRACrossAttnProcessor(hidden_size=hidden_size, cross_attention_dim=cross_attention_dim, rank=128)
 ```
 
-Then, the LoRA weights will be about 100-200MB size. Be aware that LoRA layers are easy to overfit, generally speaking, it should be enough to train only 100 - 2000 steps on small datasets (less than 1K images).
+Then, the LoRA weights will be about 100-200MB size. Be aware that LoRA layers are easy to overfit, generally speaking, it should be enough to train only 100 - 2000 steps on small datasets (less than 1K images) with batch size = 64.
