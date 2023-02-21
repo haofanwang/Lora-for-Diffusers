@@ -74,7 +74,7 @@ Our script should work fine with most of models from [Huggingface](https://huggi
 python convert_lora_safetensor_to_diffusers.py
 ```
 
-We have made a PR for diffusers on this [issue](https://github.com/huggingface/diffusers/pull/2403), you can use it on diffusers soon!
+We have made a PR for diffusers on this [issue](https://github.com/huggingface/diffusers/pull/2403), where we futher warp the convering function so that it is more flexible. You can directly check it if you cannot wait. It shall be merged into diffusers soon!
 
 # How to train your Lora?
 
