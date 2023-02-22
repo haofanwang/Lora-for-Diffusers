@@ -1,8 +1,8 @@
-# Easy-Lora-Handbook
+# Lora-for-Diffusers
 
 This repository provides the simplest tutorial code for AIGC researchers to use Lora in just a few lines. Using this handbook, you can easily play with any Lora model from active communities such as [Huggingface](https://huggingface.co/) and [cititai](https://civitai.com/).
 
-Now, we also support [ControlNet-for-Diffusers](https://github.com/haofanwang/ControlNet-for-Diffusers).
+Now, we also support [ControlNet-for-Diffusers](https://github.com/haofanwang/ControlNet-for-Diffusers), [T2I-Adapter-for-Diffusers](https://github.com/haofanwang/T2I-Adapter-for-Diffusers).
 
 # Background
 ## What is Lora?
