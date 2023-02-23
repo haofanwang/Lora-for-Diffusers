@@ -1,4 +1,4 @@
-# Lora-for-Diffusers
+# LoRA-for-Diffusers
 
 This repository provides the simplest tutorial code for AIGC researchers to use Lora in just a few lines. Using this handbook, you can easily play with any Lora model from active communities such as [Huggingface](https://huggingface.co/) and [cititai](https://civitai.com/).
 
@@ -197,3 +197,16 @@ lora_attn_procs[name] = LoRACrossAttnProcessor(hidden_size=hidden_size, cross_at
 ```
 
 Then, the LoRA weights will be about 100-200MB size. Be aware that LoRA layers are easy to overfit, generally speaking, it should be enough to train only 100 - 2000 steps on small datasets (less than 1K images) with batch size = 64.
+
+# Q&A
+(1) Can I manually adjust the weight of LoRA when merging?
+
+Yes, [the alpha](https://github.com/haofanwang/Lora-for-Diffusers/blob/22a058bbf060548539658f078c2439b1eeb76730/convert_lora_safetensor_to_diffusers.py#L26) here is the weight for LoRA. We have submitted a PR to diffusers where we provide the flexible warpped function.
+
+(2) Can I only convert LoRA (.safetensors) into other formats that diffusers supported?
+
+You can but we don't suggest, see [this issues](https://github.com/haofanwang/Lora-for-Diffusers/issues/1). There are many limitations. For example, our script cannot generalize to all .safetensors because some of them have different naming. Besides, diffusers framework only support add LoRA into UNet's attention layers, while many .safetensors from civitai contains LoRA weights for other modules like text encoder. 
+
+(3) Can I mix more than one LoRA model?
+
+Yes, the only thing is to merge twice. But please carefully set the alpha (weight of LoRA), model degrades if alpha is too large.
