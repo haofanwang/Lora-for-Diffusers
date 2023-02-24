@@ -205,7 +205,7 @@ Yes, [the alpha](https://github.com/haofanwang/Lora-for-Diffusers/blob/22a058bbf
 
 (2) Can I only convert LoRA (.safetensors) into other formats that diffusers supported?
 
-You can but we don't suggest, see [this issues](https://github.com/haofanwang/Lora-for-Diffusers/issues/1). There are many limitations. For example, our script cannot generalize to all .safetensors because some of them have different naming. Besides, diffusers framework only support add LoRA into UNet's attention layers, while many .safetensors from civitai contains LoRA weights for other modules like text encoder. 
+You can but we don't suggest, see [this issues](https://github.com/haofanwang/Lora-for-Diffusers/issues/1). There are many limitations. For example, our script cannot generalize to all .safetensors because some of them have different naming. Besides, current diffusers framework only supports adding LoRA into UNet's attention layers, while many .safetensors from civitai contain LoRA weights for other modules like text encoder. But [LoRA for text encoder](https://github.com/huggingface/transformers/pull/21770) should be supported soon.
 
 (3) Can I mix more than one LoRA model?
 
