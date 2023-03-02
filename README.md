@@ -113,6 +113,8 @@ image = pipe(prompt, num_inference_steps=30, guidance_scale=7.5).images[0]
 image.save("pokemon.png")
 ```
 
+For now, diffusers only supports train LoRA for UNet. We have supported and made a [PR](https://github.com/huggingface/diffusers/pull/2479), if you need it, please check with our PR or open an issue.
+
 ## Train LoRA with ColossalAI framework
 
 [ColossalAI](https://github.com/hpcaitech/ColossalAI) supports LoRA already. We only need modify a few lines on the top of [train_dreambooth_colossalai.py](https://github.com/huggingface/diffusers/blob/main/examples/research_projects/colossalai/train_dreambooth_colossalai.py). This example is for dreambooth, but you can easily adopt it regular text to image training. The generated LoRA weights are only for attention layers in UNet. If you want to support text encoder too, please use acceletate framework in diffusers, as ColossalAI does not support multiple models yet.
