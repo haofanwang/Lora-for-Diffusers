@@ -115,6 +115,7 @@ def convert_name_to_safetensors(name):
             new_parts.append(parts[i])
     new_name = '_'.join(new_parts)
     new_name = new_name.replace('__', '_')
+    new_name = new_name.replace('_to_out.', '_to_out_0.')
     return new_name
 
 
