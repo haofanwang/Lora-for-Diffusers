@@ -82,7 +82,7 @@ for key in state_dict:
     for item in pair_keys:
         visited.append(item)
 
-pipeline = pipeline.to(torch.float16).to("cuda")
+pipeline = pipeline.to("cuda")
 pipeline.safety_checker = lambda images, clip_input: (images, False)
 
 prompt = '1boy, wanostyle, monkey d luffy, smiling, straw hat, looking at viewer, solo, upper body, ((masterpiece)), (best quality), (extremely detailed), depth of field, sketch, dark intense shadows, sharp focus, soft lighting, hdr, colorful, good composition, fire all around, spectacular, <lora:wanostyle_2_offset:1>, closed shirt, anime screencap, scar under eye, ready to fight, black eyes'
