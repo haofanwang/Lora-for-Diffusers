@@ -215,4 +215,4 @@ Yes, the only thing is to merge twice. But please carefully set the alpha (weigh
 
 (4) What's the motivation of this project?
 
-We find there are many incredible models in civitai platform, but most of LoRA weights are in safetensors format, which is not convenient for diffusers users. Thus, we write a converting script so that you can use these LoRAs in diffusers. Be aware that we are not target for stable-diffusion-webui, which is already very mature but has totally different API as diffuers.
+We find there are many incredible models in civitai platform, but most of LoRA weights are in safetensors format, which is not convenient for diffusers users. Thus, we write a converting script so that you can use these LoRAs in diffusers. Be aware that we are not target for stable-diffusion-webui, which is already very mature but has totally different API as diffusers.
